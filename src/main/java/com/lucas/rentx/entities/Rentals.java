@@ -5,10 +5,26 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "tb_rentals")
 public class Rentals implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 	
 	private Date start_date;
@@ -21,13 +37,15 @@ public class Rentals implements Serializable {
 	
 	private Date updated_at;
 	
-	private Users user;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private User user;
 	
 	public Rentals() {		
 	}
 
 	public Rentals(UUID id, Date start_date, Date end_date, Date expected_return_date, Date created_at,
-			Date updated_at) {
+			Date updated_at, User user) {
 		super();
 		this.id = id;
 		this.start_date = start_date;
@@ -35,6 +53,7 @@ public class Rentals implements Serializable {
 		this.expected_return_date = expected_return_date;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
+		this.user = user;
 	}
 
 	public UUID getId() {
@@ -83,6 +102,14 @@ public class Rentals implements Serializable {
 
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
+	}	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override

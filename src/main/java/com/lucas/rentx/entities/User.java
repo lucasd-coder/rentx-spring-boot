@@ -1,38 +1,57 @@
 package com.lucas.rentx.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Users implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "tb_user")
+public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 	
 	private String name;
 	
 	private String password;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String driver_licence;
 	
-	private Date create_at;
-		
-	private Rentals rentals;
+	private Date created_at;
 	
-	public Users() {}
+	@OneToMany(mappedBy = "user")
+	private List<Rentals> rentals = new ArrayList<>();
+	
+	public User() {}
 
-	public Users(UUID id, String name, String password, String email, String driver_licence, Date create_at) {
+	public User(UUID id, String name, String password, String email, String driver_licence, Date create_at) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
 		this.driver_licence = driver_licence;
-		this.create_at = create_at;
+		this.created_at = create_at;
 	}
 
 	public UUID getId() {
@@ -75,12 +94,16 @@ public class Users implements Serializable {
 		this.driver_licence = driver_licence;
 	}
 
-	public Date getCreate_at() {
-		return create_at;
+	public Date getCreated_at() {
+		return created_at;
 	}
 
-	public void setCreate_at(Date create_at) {
-		this.create_at = create_at;
+	public void setCreated_at(Date create_at) {
+		this.created_at = create_at;
+	}	
+
+	public List<Rentals> getRentals() {
+		return rentals;
 	}
 
 	@Override
@@ -96,7 +119,7 @@ public class Users implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Users other = (Users) obj;
+		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
 
