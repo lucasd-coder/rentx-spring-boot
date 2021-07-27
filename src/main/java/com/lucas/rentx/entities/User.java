@@ -43,7 +43,7 @@ public class User implements Serializable {
 	@Column(unique = true)
 	private String email;
 	
-	private String driver_licence;
+	private String driver_license;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="PERFIS")
@@ -52,7 +52,7 @@ public class User implements Serializable {
 	private String avatar;
 	
 	private Date created_at;
-	
+		
 	@OneToMany(mappedBy = "user")
 	private List<Rental> rental = new ArrayList<>();
 	
@@ -60,13 +60,13 @@ public class User implements Serializable {
 		addPerfil(Perfil.USER);
 	}
 
-	public User(UUID id, String name, String password, String email, String driver_licence, String avatar, Date create_at) {
+	public User(UUID id, String name, String password, String email, String driver_license, String avatar, Date create_at) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.password = password;
 		this.email = email;
-		this.driver_licence = driver_licence;
+		this.driver_license = driver_license;
 		this.avatar = avatar;
 		this.created_at = create_at;
 		addPerfil(Perfil.USER);
@@ -120,12 +120,12 @@ public class User implements Serializable {
 		this.avatar = avatar;
 	}
 
-	public String getDriver_licence() {
-		return driver_licence;
+	public String getDriver_license() {
+		return driver_license;
 	}
 
-	public void setDriver_licence(String driver_licence) {
-		this.driver_licence = driver_licence;
+	public void setDriver_license(String driver_license) {
+		this.driver_license = driver_license;
 	}
 
 	public Date getCreated_at() {
