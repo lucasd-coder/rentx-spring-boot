@@ -1,14 +1,32 @@
 package com.lucas.rentx.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+
+@Entity
+@Table(name = "tb_categories")
 public class Categories implements Serializable {
 		
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 	
 	private String name;
@@ -17,6 +35,9 @@ public class Categories implements Serializable {
 	
 	private Date created_at;
 	
+	@OneToMany(mappedBy = "categories")
+	private List<Car> car = new ArrayList<>();
+		
 	public Categories() {		
 	}
 
@@ -58,6 +79,10 @@ public class Categories implements Serializable {
 
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
+	}
+
+	public List<Car> getCars() {
+		return car;
 	}
 
 	@Override

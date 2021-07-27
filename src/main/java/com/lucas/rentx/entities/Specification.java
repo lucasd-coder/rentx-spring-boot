@@ -2,13 +2,30 @@ package com.lucas.rentx.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
-public class Specifications implements Serializable {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "tb_specifications")
+public class Specification implements Serializable {
 		
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(generator = "UUID")
+	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 	
 	private String name;
@@ -17,10 +34,13 @@ public class Specifications implements Serializable {
 	
 	private Date created_at;
 	
-	public Specifications() {		
+	@OneToMany(mappedBy = "id.specification")
+	private Set<SpecificationCar> specifications = new HashSet<>();
+	
+	public Specification() {		
 	}
 
-	public Specifications(UUID id, String name, String description, Date created_at) {
+	public Specification(UUID id, String name, String description, Date created_at) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -58,6 +78,14 @@ public class Specifications implements Serializable {
 
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
+	}	
+
+	public Set<SpecificationCar> getSpecifications() {
+		return specifications;
+	}
+
+	public void setSpecifications(Set<SpecificationCar> specifications) {
+		this.specifications = specifications;
 	}
 
 	@Override
@@ -73,7 +101,7 @@ public class Specifications implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Specifications other = (Specifications) obj;
+		Specification other = (Specification) obj;
 		return Objects.equals(id, other.id);
 	}		
 

@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "tb_rentals")
-public class Rentals implements Serializable {
+public class Rental implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -41,11 +41,15 @@ public class Rentals implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	public Rentals() {		
+	@ManyToOne
+	@JoinColumn(name = "car_id")
+	private Car car;
+	
+	public Rental() {		
 	}
 
-	public Rentals(UUID id, Date start_date, Date end_date, Date expected_return_date, Date created_at,
-			Date updated_at, User user) {
+	public Rental(UUID id, Date start_date, Date end_date, Date expected_return_date, Date created_at,
+			Date updated_at, User user, Car car) {
 		super();
 		this.id = id;
 		this.start_date = start_date;
@@ -54,6 +58,7 @@ public class Rentals implements Serializable {
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 		this.user = user;
+		this.car = car;
 	}
 
 	public UUID getId() {
@@ -110,6 +115,14 @@ public class Rentals implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}	
+
+	public Car getCars() {
+		return car;
+	}
+
+	public void setCars(Car car) {
+		this.car = car;
 	}
 
 	@Override
@@ -125,7 +138,7 @@ public class Rentals implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Rentals other = (Rentals) obj;
+		Rental other = (Rental) obj;
 		return Objects.equals(id, other.id);
 	}
 
