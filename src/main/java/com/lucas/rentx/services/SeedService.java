@@ -19,8 +19,8 @@ public class SeedService {
 	
 	public void instantiateTestDatabase() throws ParseException {
 			
-		User user1 = new User(null, "Maria", "123456", "maria@gmail.com", "123456789", null, new Date());
-		User admin = new User(null, "João", "123456", "joao@gmail.com", "123456789", null, new Date());
+		User user1 = new User(null, "Maria", "maria123","123456", "maria@gmail.com", "123456789", null, new Date());
+		User admin = new User(null, "João", "joao123", "123456", "joao@gmail.com", "123456789", null, new Date());
 		
 		userRepository.saveAll(Arrays.asList(user1, admin));
 		
