@@ -4,45 +4,25 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import com.lucas.rentx.entities.User;
-
 public class UserResponseDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private UUID id;	
-	
+	private UUID id;
+
 	private String name;
-		
+
 	private String username;
-		
+
 	private String email;
-	
+
+	private String avatar;
+
 	private String driver_license;
 
 	private Date created_at;
 
 	public UserResponseDTO() {
-	}
-
-	public UserResponseDTO(UUID id, String name, String username, String email, String driver_license,
-			Date created_at) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.username = username;	
-		this.email = email;
-		this.driver_license = driver_license;
-		this.created_at = created_at;
-	}
-
-	public UserResponseDTO(User entity) {
-		id = entity.getId();
-		name = entity.getName();
-		username = entity.getUsername();
-		email = entity.getEmail();
-		driver_license = entity.getDriver_license();
-		created_at = entity.getCreated_at();
 	}
 
 	public UUID getId() {
@@ -59,7 +39,7 @@ public class UserResponseDTO implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}		
+	}
 
 	public String getUsername() {
 		return username;
@@ -77,6 +57,14 @@ public class UserResponseDTO implements Serializable {
 		this.email = email;
 	}
 
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+
 	public String getDriver_license() {
 		return driver_license;
 	}
@@ -92,4 +80,5 @@ public class UserResponseDTO implements Serializable {
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
 	}
+
 }

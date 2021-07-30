@@ -13,36 +13,48 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucas.rentx.dto.UserDTO;
 import com.lucas.rentx.dto.UserResponseDTO;
 import com.lucas.rentx.entities.User;
+import com.lucas.rentx.services.UploadUserAvatarService;
 import com.lucas.rentx.services.UserService;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
-	
-	@Autowired 
+
+	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private UploadUserAvatarService uploadUserAvatarService;
+
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UserResponseDTO> findById(@PathVariable UUID id) {
-		UserResponseDTO userDto = new UserResponseDTO(); 
-		User obj = userService.findById(id);
+		UserResponseDTO userDto = new UserResponseDTO();
+		User obj = userService.find(id);
 		BeanUtils.copyProperties(obj, userDto);
 		return ResponseEntity.ok().body(userDto);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody UserDTO objDto) {
 		User obj = userService.fromDto(objDto);
 		obj = userService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).build();	
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		return ResponseEntity.created(uri).build();
 	}
-	
+
+	@PostMapping(value = "/avatar")
+	public ResponseEntity<Void> uploadUserAvatar(@RequestParam MultipartFile file) {
+		String avatar = uploadUserAvatarService.salvarAvatar(file);
+		System.out.println(avatar);
+		return ResponseEntity.ok().build();
+	}
+
 }

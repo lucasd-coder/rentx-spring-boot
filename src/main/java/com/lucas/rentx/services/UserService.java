@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lucas.rentx.dto.UserDTO;
 import com.lucas.rentx.entities.User;
@@ -20,11 +21,14 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private UploadUserAvatarService uploadUserAvatarService;
 
 	@Autowired
 	private BCryptPasswordEncoder pe;
 	
-	public User findById(UUID id) {
+	public User find(UUID id) {
 		UserSS user = UserAuthService.authenticated();
 		if (user == null || !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso negado");
@@ -37,6 +41,16 @@ public class UserService {
 	public User insert(User obj) {
 		obj.setId(null);
 		return userRepository.save(obj);
+	}
+	
+	public User uploadAvatar(MultipartFile file) {
+		UserSS user = UserAuthService.authenticated();
+		User checkUserExist = find(user.getId());				
+		String avatar = uploadUserAvatarService.salvarAvatar(file);
+		System.out.println(avatar);
+		checkUserExist.setAvatar(avatar);
+		return userRepository.save(checkUserExist);
+		
 	}
 
 	public User fromDto(UserDTO objDto) {
