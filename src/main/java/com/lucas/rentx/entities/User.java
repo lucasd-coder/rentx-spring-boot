@@ -22,48 +22,51 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucas.rentx.entities.enums.Perfil;
 
 @Entity
 @Table(name = "tb_users")
 public class User implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
-	
+
 	private String name;
-	
+
 	@Column(unique = true)
 	private String username;
 	
+	@JsonIgnore
 	private String password;
-	
+
 	@Column(unique = true)
 	private String email;
-	
+
 	private String driver_license;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="PERFIS")
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
-	
+
 	private String avatar;
-	
+
 	private Date created_at;
-		
-	@OneToMany(mappedBy = "user")
-	private List<Rental> rental = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+	private List<Rental> rental = new ArrayList<>();
+
 	public User() {
 		addPerfil(Perfil.USER);
 	}
 
-	public User(UUID id, String name, String username, String password, String email, String driver_license, String avatar, Date create_at) {
+	public User(UUID id, String name, String username, String password, String email, String driver_license,
+			String avatar, Date create_at) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -91,11 +94,11 @@ public class User implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getUsername() {
 		return username;
 	}
-	
+
 	public void setUsername(String username) {
 		this.username = username;
 	}
@@ -115,11 +118,11 @@ public class User implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Set<Perfil> getPerfis() {
-		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());		
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-	
+
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}
@@ -146,8 +149,8 @@ public class User implements Serializable {
 
 	public void setCreated_at(Date create_at) {
 		this.created_at = create_at;
-	}	
-
+	}
+		
 	public List<Rental> getRentals() {
 		return rental;
 	}

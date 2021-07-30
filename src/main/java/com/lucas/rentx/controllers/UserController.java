@@ -1,11 +1,15 @@
 package com.lucas.rentx.controllers;
 
 import java.net.URI;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.lucas.rentx.dto.UserDTO;
+import com.lucas.rentx.dto.UserResponseDTO;
 import com.lucas.rentx.entities.User;
 import com.lucas.rentx.services.UserService;
 
@@ -22,6 +27,14 @@ public class UserController {
 	
 	@Autowired 
 	private UserService userService;
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<UserResponseDTO> findById(@PathVariable UUID id) {
+		UserResponseDTO userDto = new UserResponseDTO(); 
+		User obj = userService.findById(id);
+		BeanUtils.copyProperties(obj, userDto);
+		return ResponseEntity.ok().body(userDto);
+	}
 	
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody UserDTO objDto) {

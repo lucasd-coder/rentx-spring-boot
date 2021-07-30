@@ -37,10 +37,11 @@ public class Rental implements Serializable {
 	
 	private Date updated_at;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+		
 	@ManyToOne
 	@JoinColumn(name = "car_id")
 	private Car car;
@@ -108,7 +109,7 @@ public class Rental implements Serializable {
 	public void setUpdated_at(Date updated_at) {
 		this.updated_at = updated_at;
 	}	
-
+		
 	public User getUser() {
 		return user;
 	}
