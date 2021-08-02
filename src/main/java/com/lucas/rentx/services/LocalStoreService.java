@@ -4,35 +4,39 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-public class UploadUserAvatarService {
+public class LocalStoreService {
 	
 		@Value("${tmp.disco.raiz}")
 		private String raiz;
 		
 		@Value("${tmp.disco.diretorio-avatar}")
-		private String diretorioAvatar;
+		private String diretorioAvatar;			
 		
 		public String salvarAvatar(MultipartFile avatar) {
+			
 			return this.salvar(this.diretorioAvatar, avatar);
 		}
 				
 		public String salvar(String diretorio, MultipartFile arquivo) {
-			Path diretorioPath = Paths.get(this.raiz, diretorio);
-			Path arquivoPath = diretorioPath.resolve(arquivo.getOriginalFilename());			
+			Path diretorioPath = Paths.get(this.raiz, diretorio);			
+			Path arquivoPath = diretorioPath.resolve(arquivo.getOriginalFilename());
+			
+		
 			try {
-				Files.createDirectories(diretorioPath);
+				
+				Files.createDirectories(diretorioPath);					
 				arquivo.transferTo(arquivoPath.toFile());
-				return UUID.randomUUID() + "-" + arquivo.getOriginalFilename(); 
+				return arquivo.getOriginalFilename();
+				
 			} catch (IOException e) {
 				throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
 			}		
-		}
+		}			
 
 }

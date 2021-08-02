@@ -21,7 +21,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.lucas.rentx.dto.UserDTO;
 import com.lucas.rentx.dto.UserResponseDTO;
 import com.lucas.rentx.entities.User;
-import com.lucas.rentx.services.UploadUserAvatarService;
 import com.lucas.rentx.services.UserService;
 
 @RestController
@@ -31,8 +30,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@Autowired
-	private UploadUserAvatarService uploadUserAvatarService;
+//	@Autowired
+//	private LocalStoreService uploadUserAvatarService;
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<UserResponseDTO> findById(@PathVariable UUID id) {
@@ -51,9 +50,8 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/avatar")
-	public ResponseEntity<Void> uploadUserAvatar(@RequestParam MultipartFile file) {
-		String avatar = uploadUserAvatarService.salvarAvatar(file);
-		System.out.println(avatar);
+	public ResponseEntity<Void> uploadUserAvatar(@RequestParam MultipartFile file) {		 
+				userService.uploadAvatar(file);		
 		return ResponseEntity.ok().build();
 	}
 
