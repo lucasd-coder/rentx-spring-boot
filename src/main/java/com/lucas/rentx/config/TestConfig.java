@@ -21,4 +21,5 @@ public class TestConfig {
 		seedService.instantiateTestDatabase();
 		return true;
 	}
+		
 }
