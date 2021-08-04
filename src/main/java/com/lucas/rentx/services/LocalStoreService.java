@@ -37,5 +37,4 @@ public class LocalStoreService {
 			throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
 		}
 	}
-
 }

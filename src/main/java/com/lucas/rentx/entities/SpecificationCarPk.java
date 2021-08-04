@@ -9,13 +9,13 @@ import javax.persistence.ManyToOne;
 
 @Embeddable
 public class SpecificationCarPk implements Serializable {
-		
+
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
 	@JoinColumn(name = "car_id")
 	private Car car;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "specification_id")
 	private Specification specification;

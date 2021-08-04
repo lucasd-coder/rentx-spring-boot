@@ -1,6 +1,5 @@
 package com.lucas.rentx.services;
 
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,15 +43,15 @@ public class UserService {
 
 	public User uploadAvatar(MultipartFile file) {
 		UserSS user = UserAuthService.authenticated();
-		User checkUserExist = find(user.getId());
+		User checkUserExist = find(user.getId());		
 		String avatar = localStoreService.salvarAvatar(file);
-		checkUserExist.setAvatar(avatar);
+		checkUserExist.setAvatar(avatar);		
 		return userRepository.save(checkUserExist);
 
 	}
 
 	public User fromDto(UserDTO objDto) {
 		return new User(objDto.getId(), objDto.getName(), objDto.getUsername(), pe.encode(objDto.getPassword()),
-				objDto.getEmail(), objDto.getDriver_license(), null, new Date());
+				objDto.getEmail(), objDto.getDriver_license(), null, null);
 	}
 }

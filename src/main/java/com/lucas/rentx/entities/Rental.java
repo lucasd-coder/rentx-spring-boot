@@ -1,6 +1,7 @@
 package com.lucas.rentx.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -18,46 +20,55 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "tb_rentals")
 public class Rental implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
-	
-	private Date start_date;
-	
-	private Date end_date;
-	
-	private Date expected_return_date;
-	
-	private Date created_at;
-	
-	private Date updated_at;
-	
-	
+
+	@Column(name = "start_date")
+	private Date startDate;
+
+	@Column(name = "end_date")
+	private Date endDate;
+
+	@Column(name = "expected_return_date")
+	private Date expectedReturnDate;
+
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
+	@Column(name = "updated_at")
+	private LocalDateTime updatedAt;
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-		
+
 	@ManyToOne
 	@JoinColumn(name = "car_id")
 	private Car car;
-	
-	public Rental() {		
+
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
 	}
 
-	public Rental(UUID id, Date start_date, Date end_date, Date expected_return_date, Date created_at,
-			Date updated_at, User user, Car car) {
+	public Rental() {
+	}
+
+	public Rental(UUID id, Date startDate, Date endDate, Date expectedReturnDate, LocalDateTime createdAt,
+			LocalDateTime updatedAt, User user, Car car) {
 		super();
 		this.id = id;
-		this.start_date = start_date;
-		this.end_date = end_date;
-		this.expected_return_date = expected_return_date;
-		this.created_at = created_at;
-		this.updated_at = updated_at;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.expectedReturnDate = expectedReturnDate;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 		this.user = user;
 		this.car = car;
 	}
@@ -70,53 +81,53 @@ public class Rental implements Serializable {
 		this.id = id;
 	}
 
-	public Date getStart_date() {
-		return start_date;
+	public Date getStartDate() {
+		return startDate;
 	}
 
-	public void setStart_date(Date start_date) {
-		this.start_date = start_date;
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
 	}
 
-	public Date getEnd_date() {
-		return end_date;
+	public Date getEndDate() {
+		return endDate;
 	}
 
-	public void setEnd_date(Date end_date) {
-		this.end_date = end_date;
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
-	public Date getExpected_return_date() {
-		return expected_return_date;
+	public Date getExpectedReturnDate() {
+		return expectedReturnDate;
 	}
 
-	public void setExpected_return_date(Date expected_return_date) {
-		this.expected_return_date = expected_return_date;
+	public void setExpectedReturnDate(Date expectedReturnDate) {
+		this.expectedReturnDate = expectedReturnDate;
 	}
 
-	public Date getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Date getUpdated_at() {
-		return updated_at;
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdated_at(Date updated_at) {
-		this.updated_at = updated_at;
-	}	
-		
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}	
+	}
 
 	public Car getCars() {
 		return car;

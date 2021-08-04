@@ -2,6 +2,7 @@ package com.lucas.rentx.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -17,8 +18,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "tb_cars_image")
-public class CarImage implements Serializable {
+@Table(name = "tb_users_tokens")
+public class UserToken implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -28,30 +29,34 @@ public class CarImage implements Serializable {
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
 
-	@Column(name = "image_name")
-	private String imageName;
+	@Column(name = "refresh_token")
+	private String refreshToken;
+
+	@Column(name = "expires_date")
+	private Date expiresDate;
 
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
 	@ManyToOne
-	@JoinColumn(name = "car_id")
-	private Car car;
+	@JoinColumn(name = "user_id")
+	private User tokenUser;
 
 	@PrePersist
 	private void prePersist() {
 		this.createdAt = LocalDateTime.now();
 	}
 
-	public CarImage() {
+	public UserToken() {
 	}
 
-	public CarImage(UUID id, String imageName, LocalDateTime createAt, Car car) {
+	public UserToken(UUID id, String refreshToken, Date expiresDate, LocalDateTime createdAt, User tokenUser) {
 		super();
 		this.id = id;
-		this.imageName = imageName;
-		this.createdAt = createAt;
-		this.car = car;
+		this.refreshToken = refreshToken;
+		this.expiresDate = expiresDate;
+		this.createdAt = createdAt;
+		this.tokenUser = tokenUser;
 	}
 
 	public UUID getId() {
@@ -62,28 +67,36 @@ public class CarImage implements Serializable {
 		this.id = id;
 	}
 
-	public String getImageName() {
-		return imageName;
+	public String getRefreshToken() {
+		return refreshToken;
 	}
 
-	public void setImageName(String imageName) {
-		this.imageName = imageName;
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+
+	public Date getExpiresDate() {
+		return expiresDate;
+	}
+
+	public void setExpiresDate(Date expiresDate) {
+		this.expiresDate = expiresDate;
 	}
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createAt) {
-		this.createdAt = createAt;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Car getCar() {
-		return car;
+	public User getTokenUser() {
+		return tokenUser;
 	}
 
-	public void setCar(Car car) {
-		this.car = car;
+	public void setTokenUser(User tokenUser) {
+		this.tokenUser = tokenUser;
 	}
 
 	@Override
@@ -99,7 +112,7 @@ public class CarImage implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		CarImage other = (CarImage) obj;
+		UserToken other = (UserToken) obj;
 		return Objects.equals(id, other.id);
 	}
 

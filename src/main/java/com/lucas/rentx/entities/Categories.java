@@ -1,8 +1,8 @@
 package com.lucas.rentx.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,41 +12,47 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-
 @Entity
 @Table(name = "tb_categories")
 public class Categories implements Serializable {
-		
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
-	
+
 	private String name;
-	
+
 	private String description;
-	
-	private Date created_at;
-	
+
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
 	@OneToMany(mappedBy = "categories")
 	private List<Car> car = new ArrayList<>();
-		
-	public Categories() {		
+	
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
 	}
 
-	public Categories(UUID id, String name, String description, Date created_at) {
+	public Categories() {
+	}
+
+	public Categories(UUID id, String name, String description, LocalDateTime createdAt) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.created_at = created_at;
+		this.createdAt = createdAt;
 	}
 
 	public UUID getId() {
@@ -73,12 +79,12 @@ public class Categories implements Serializable {
 		this.description = description;
 	}
 
-	public Date getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
 	}
 
 	public List<Car> getCars() {
@@ -100,6 +106,6 @@ public class Categories implements Serializable {
 			return false;
 		Categories other = (Categories) obj;
 		return Objects.equals(id, other.id);
-	}	
-	
+	}
+
 }

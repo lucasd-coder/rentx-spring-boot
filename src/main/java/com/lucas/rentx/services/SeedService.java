@@ -2,7 +2,6 @@ package com.lucas.rentx.services;
 
 import java.text.ParseException;
 import java.util.Arrays;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,8 +21,8 @@ public class SeedService {
 
 	public void instantiateTestDatabase() throws ParseException {
 
-		User user1 = new User(null, "Maria", "maria123", pe.encode("123456"), "maria@gmail.com", "123456789", null, new Date());
-		User admin = new User(null, "João", "joao123", pe.encode("123456"), "joao@gmail.com", "123456789", null, new Date());
+		User user1 = new User(null, "Maria", "maria123", pe.encode("123456"), "maria@gmail.com", "123456789", null, null);
+		User admin = new User(null, "João", "joao123", pe.encode("123456"), "joao@gmail.com", "123456789", null, null);
 
 		userRepository.saveAll(Arrays.asList(user1, admin));
 

@@ -1,8 +1,8 @@
 package com.lucas.rentx.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -18,6 +18,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -41,14 +42,15 @@ public class User implements Serializable {
 
 	@Column(unique = true)
 	private String username;
-	
+
 	@JsonIgnore
 	private String password;
 
 	@Column(unique = true)
 	private String email;
 
-	private String driver_license;
+	@Column(name = "driver_license")
+	private String driverLicense;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
@@ -56,26 +58,35 @@ public class User implements Serializable {
 
 	private String avatar;
 
-	private Date created_at;
-	
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Rental> rental = new ArrayList<>();
+	private List<Rental> rentals = new ArrayList<>();
+
+	@OneToMany(mappedBy = "tokenUser", fetch = FetchType.LAZY)
+	private List<UserToken> tokens = new ArrayList<>();
+
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
+	}
 
 	public User() {
 		addPerfil(Perfil.USER);
 	}
 
-	public User(UUID id, String name, String username, String password, String email, String driver_license,
-			String avatar, Date create_at) {
+	public User(UUID id, String name, String username, String password, String email, String driverLicense,
+			String avatar, LocalDateTime createAt) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.driver_license = driver_license;
+		this.driverLicense = driverLicense;
 		this.avatar = avatar;
-		this.created_at = create_at;
+		this.createdAt = createAt;
 		addPerfil(Perfil.USER);
 	}
 
@@ -135,24 +146,28 @@ public class User implements Serializable {
 		this.avatar = avatar;
 	}
 
-	public String getDriver_license() {
-		return driver_license;
+	public String getDriverLicense() {
+		return driverLicense;
 	}
 
-	public void setDriver_license(String driver_license) {
-		this.driver_license = driver_license;
+	public void setDriverLicense(String driverLicense) {
+		this.driverLicense = driverLicense;
 	}
 
-	public Date getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Date create_at) {
-		this.created_at = create_at;
+	public void setCreatedAt(LocalDateTime createAt) {
+		this.createdAt = createAt;
 	}
-		
+
 	public List<Rental> getRentals() {
-		return rental;
+		return rentals;
+	}
+
+	public List<UserToken> getTokens() {
+		return tokens;
 	}
 
 	@Override

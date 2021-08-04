@@ -1,8 +1,8 @@
 package com.lucas.rentx.entities;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -24,63 +25,71 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "tb_cars")
-public class Car implements Serializable  {
-		
+public class Car implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(generator = "UUID")
 	@GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
 	@Column(name = "id", updatable = false, nullable = false)
 	private UUID id;
-	
+
 	private String name;
-	
+
 	private String description;
-	
-	private Integer daily_rate;
-	
+
+	@Column(name = "daily_rate")
+	private Integer dailyRate;
+
 	@Column(columnDefinition = "boolean default true")
 	private Boolean avaiable;
-	
-	private String license_plate;
-	
-	private Integer fine_amount;
-	
+
+	@Column(name = "license_plate")
+	private String licensePlate;
+
+	@Column(name = "fine_amount")
+	private Integer fineAmount;
+
 	private String brand;
-	
-	private Date created_at;
-	
+
+	@Column(name = "created_at")
+	private LocalDateTime createdAt;
+
 	@OneToMany(mappedBy = "car")
 	private List<Rental> rental = new ArrayList<>();
-	
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Categories categories;
-	
-	@OneToMany(mappedBy = "cars_image")
-	private List<CarImage> carImage = new ArrayList<>();
-	
-	
+
+	@OneToMany(mappedBy = "car")
+	private List<CarImage> images = new ArrayList<>();
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.car")
 	private Set<SpecificationCar> specifications = new HashSet<>();
-	
-	public Car() {		
+
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
 	}
 
-	public Car(UUID id, String name, String description, Integer daily_rate, Boolean avaiable, String license_plate,
-			Integer fine_amount, String brand, Date created_at, Categories categories) {
+	public Car() {
+	}
+
+	public Car(UUID id, String name, String description, Integer dailyRate, Boolean avaiable, String licensePlate,
+			Integer fineAmount, String brand, LocalDateTime createAt, Categories categories) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
-		this.daily_rate = daily_rate;
+		this.dailyRate = dailyRate;
 		this.avaiable = avaiable;
-		this.license_plate = license_plate;
-		this.fine_amount = fine_amount;
+		this.licensePlate = licensePlate;
+		this.fineAmount = fineAmount;
 		this.brand = brand;
-		this.created_at = created_at;
+		this.createdAt = createAt;
 		this.categories = categories;
 	}
 
@@ -108,12 +117,12 @@ public class Car implements Serializable  {
 		this.description = description;
 	}
 
-	public Integer getDaily_rate() {
-		return daily_rate;
+	public Integer getDailyRate() {
+		return dailyRate;
 	}
 
-	public void setDaily_rate(Integer daily_rate) {
-		this.daily_rate = daily_rate;
+	public void setDailyRate(Integer daily_rate) {
+		this.dailyRate = daily_rate;
 	}
 
 	public Boolean getAvaiable() {
@@ -124,20 +133,20 @@ public class Car implements Serializable  {
 		this.avaiable = avaiable;
 	}
 
-	public String getLicense_plate() {
-		return license_plate;
+	public String getLicensePlate() {
+		return licensePlate;
 	}
 
-	public void setLicense_plate(String license_plate) {
-		this.license_plate = license_plate;
+	public void setLicensePlate(String licensePlate) {
+		this.licensePlate = licensePlate;
 	}
 
-	public Integer getFine_amount() {
-		return fine_amount;
+	public Integer getFineAmount() {
+		return fineAmount;
 	}
 
-	public void setFine_amount(Integer fine_amount) {
-		this.fine_amount = fine_amount;
+	public void setFineAmount(Integer fineAmount) {
+		this.fineAmount = fineAmount;
 	}
 
 	public String getBrand() {
@@ -148,17 +157,17 @@ public class Car implements Serializable  {
 		this.brand = brand;
 	}
 
-	public Date getCreated_at() {
-		return created_at;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}	
+	public void setCreatedAt(LocalDateTime createAt) {
+		this.createdAt = createAt;
+	}
 
 	public List<Rental> getRentals() {
 		return rental;
-	}		
+	}
 
 	public Categories getCategories() {
 		return categories;
@@ -166,10 +175,10 @@ public class Car implements Serializable  {
 
 	public void setCategories(Categories categories) {
 		this.categories = categories;
-	}		
+	}
 
-	public List<CarImage> getCarsImage() {
-		return carImage;
+	public List<CarImage> getImages() {
+		return images;
 	}
 
 	@Override
@@ -187,5 +196,5 @@ public class Car implements Serializable  {
 			return false;
 		Car other = (Car) obj;
 		return Objects.equals(id, other.id);
-	}	
+	}
 }
