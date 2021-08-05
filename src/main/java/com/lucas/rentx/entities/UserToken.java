@@ -30,7 +30,7 @@ public class UserToken implements Serializable {
 	private UUID id;
 
 	@Column(name = "refresh_token")
-	private String refreshToken;
+	private UUID refreshToken;
 
 	@Column(name = "expires_date")
 	private Date expiresDate;
@@ -50,7 +50,7 @@ public class UserToken implements Serializable {
 	public UserToken() {
 	}
 
-	public UserToken(UUID id, String refreshToken, Date expiresDate, LocalDateTime createdAt, User tokenUser) {
+	public UserToken(UUID id, UUID refreshToken, Date expiresDate, LocalDateTime createdAt, User tokenUser) {
 		super();
 		this.id = id;
 		this.refreshToken = refreshToken;
@@ -67,11 +67,11 @@ public class UserToken implements Serializable {
 		this.id = id;
 	}
 
-	public String getRefreshToken() {
+	public UUID getRefreshToken() {
 		return refreshToken;
 	}
 
-	public void setRefreshToken(String refreshToken) {
+	public void setRefreshToken(UUID refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 

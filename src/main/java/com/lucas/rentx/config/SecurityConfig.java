@@ -30,16 +30,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private JWTUtil jwtUtil;
-	
+
 	@Autowired
 	private Environment env;
 
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", };
-	
-	private static final String[] PUBLIC_MATCHERS_POST = { "/users/**", "/auth/forgot/**" };
+
+	private static final String[] PUBLIC_MATCHERS_POST = { "/users/**", "/auth/forgot/**", "/auth/reset/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -48,16 +48,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
 			http.headers().frameOptions().disable();
 		}
-		
+
 		http.cors().and().csrf().disable();
 		http.authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-			.antMatchers(PUBLIC_MATCHERS).permitAll()
-			.anyRequest().authenticated();
+				.antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);		
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
-	
+
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
@@ -71,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
-	
+
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();

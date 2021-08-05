@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.lucas.rentx.services.exceptions.FileException;
+
 @Service
 public class LocalStoreService {
 
@@ -34,7 +36,7 @@ public class LocalStoreService {
 			return arquivo.getOriginalFilename();
 
 		} catch (IOException e) {
-			throw new RuntimeException("Problemas na tentativa de salvar arquivo.", e);
+			throw new FileException("Problemas na tentativa de salvar arquivo.");
 		}
 	}
 }
