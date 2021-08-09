@@ -30,13 +30,11 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-//	@Autowired
-//	private LocalStoreService uploadUserAvatarService;
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserResponseDTO> findById(@PathVariable UUID id) {
-		UserResponseDTO userDto = new UserResponseDTO();
+	public ResponseEntity<UserResponseDTO> find(@PathVariable UUID id) {		
 		User obj = userService.find(id);
+		UserResponseDTO userDto = new UserResponseDTO(obj);
 		BeanUtils.copyProperties(obj, userDto);
 		return ResponseEntity.ok().body(userDto);
 	}

@@ -65,7 +65,7 @@ public class EtherealMailService {
 		
 		UUID token = UUID.randomUUID();
 		
-		Date expiresDate = addHoursToJavaUtilDate(new Date(), 3);
+		Date expiresDate = addHoursToJavaUtilDate(new Date(), 1);
 		
 		UserToken userToken = new UserToken(null, token, expiresDate, null, user);
 		

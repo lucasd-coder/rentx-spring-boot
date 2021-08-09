@@ -1,8 +1,10 @@
 package com.lucas.rentx.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.lucas.rentx.entities.User;
 
 public class UserResponseDTO implements Serializable {
 
@@ -18,11 +20,21 @@ public class UserResponseDTO implements Serializable {
 
 	private String avatar;
 
-	private String driver_license;
+	private String driver_licence;
 
-	private Date created_at;
+	private LocalDateTime created_at;
 
 	public UserResponseDTO() {
+	}
+	
+	public UserResponseDTO(User entity) {
+		id = entity.getId();
+		name = entity.getName();
+		username = entity.getUsername();
+		email = entity.getEmail();
+		avatar = entity.getAvatar();
+		driver_licence = entity.getDriverLicense();
+		created_at = entity.getCreatedAt();
 	}
 
 	public UUID getId() {
@@ -66,18 +78,18 @@ public class UserResponseDTO implements Serializable {
 	}
 
 	public String getDriver_license() {
-		return driver_license;
+		return driver_licence;
 	}
 
-	public void setDriver_license(String driver_license) {
-		this.driver_license = driver_license;
+	public void setDriver_license(String driver_licence) {
+		this.driver_licence = driver_licence;
 	}
 
-	public Date getCreated_at() {
+	public LocalDateTime getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(Date created_at) {
+	public void setCreated_at(LocalDateTime created_at) {
 		this.created_at = created_at;
 	}
 

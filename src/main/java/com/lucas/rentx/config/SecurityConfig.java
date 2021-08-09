@@ -41,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS_POST = { "/users/**", "/auth/forgot/**", "/auth/reset/**" };
 
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+			"classpath:/resources/",  "classpath:/tmp/**"};
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 
@@ -51,7 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.cors().and().csrf().disable();
 		http.authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-				.antMatchers(PUBLIC_MATCHERS).permitAll().anyRequest().authenticated();
+				.antMatchers(PUBLIC_MATCHERS).permitAll().antMatchers(HttpMethod.GET, CLASSPATH_RESOURCE_LOCATIONS)
+				.permitAll().anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
