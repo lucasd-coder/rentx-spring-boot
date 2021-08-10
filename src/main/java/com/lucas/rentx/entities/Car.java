@@ -43,7 +43,7 @@ public class Car implements Serializable {
 	@Column(columnDefinition = "boolean default true")
 	private Boolean avaiable;
 
-	@Column(name = "license_plate")
+	@Column(name = "license_plate", unique = true)
 	private String licensePlate;
 
 	@Column(name = "fine_amount")
@@ -59,7 +59,7 @@ public class Car implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
-	private Categories categories;
+	private Category category;
 
 	@OneToMany(mappedBy = "car")
 	private List<CarImage> images = new ArrayList<>();
@@ -77,7 +77,7 @@ public class Car implements Serializable {
 	}
 
 	public Car(UUID id, String name, String description, Integer dailyRate, Boolean avaiable, String licensePlate,
-			Integer fineAmount, String brand, LocalDateTime createAt, Categories categories) {
+			Integer fineAmount, String brand, LocalDateTime createAt, Category category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -88,7 +88,7 @@ public class Car implements Serializable {
 		this.fineAmount = fineAmount;
 		this.brand = brand;
 		this.createdAt = createAt;
-		this.categories = categories;
+		this.category = category;
 	}
 
 	public UUID getId() {
@@ -167,12 +167,12 @@ public class Car implements Serializable {
 		return rental;
 	}
 
-	public Categories getCategories() {
-		return categories;
+	public Category getCategories() {
+		return category;
 	}
 
-	public void setCategories(Categories categories) {
-		this.categories = categories;
+	public void setCategories(Category category) {
+		this.category = category;
 	}
 
 	public List<CarImage> getImages() {

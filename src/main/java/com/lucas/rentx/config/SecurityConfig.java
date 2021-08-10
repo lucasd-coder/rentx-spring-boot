@@ -41,7 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**", };
 
 	private static final String[] PUBLIC_MATCHERS_POST = { "/users/**", "/auth/forgot/**", "/auth/reset/**" };
-			
+
+	private static final String[] PUBLIC_MATCHERS_GET = { "/categories/**", "/tmp/avatar/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -53,20 +54,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.cors().and().csrf().disable();
 		http.authorizeRequests().antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
-				.antMatchers(PUBLIC_MATCHERS).permitAll()
-				.antMatchers(HttpMethod.GET, "/tmp/avatar/**").permitAll()
-				.anyRequest().authenticated();		
+				.antMatchers(PUBLIC_MATCHERS).permitAll().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+				.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
-	
-	
+
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/avatar/**").addResourceLocations("classpath:/static/tmp/avatar/");
 	}
 
-		
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());

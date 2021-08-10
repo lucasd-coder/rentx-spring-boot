@@ -44,11 +44,11 @@ public class UserService {
 	public User uploadAvatar(MultipartFile file) {
 		UserSS user = UserAuthService.authenticated();
 		User checkUserExist = find(user.getId());
-		if(checkUserExist.getAvatar() != null) {
+		if (checkUserExist.getAvatar() != null) {
 			localStoreService.delete(checkUserExist.getAvatar());
 		}
 		String avatar = localStoreService.salvarAvatar(file);
-		checkUserExist.setAvatar(avatar);		
+		checkUserExist.setAvatar(avatar);
 		return userRepository.save(checkUserExist);
 
 	}

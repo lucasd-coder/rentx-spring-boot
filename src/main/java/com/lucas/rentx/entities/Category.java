@@ -18,7 +18,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "tb_categories")
-public class Categories implements Serializable {
+public class Category implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,7 +34,7 @@ public class Categories implements Serializable {
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
-	@OneToMany(mappedBy = "categories")
+	@OneToMany(mappedBy = "category")
 	private List<Car> car = new ArrayList<>();
 	
 	@PrePersist
@@ -42,10 +42,10 @@ public class Categories implements Serializable {
 		this.createdAt = LocalDateTime.now();
 	}
 
-	public Categories() {
+	public Category() {
 	}
 
-	public Categories(UUID id, String name, String description, LocalDateTime createdAt) {
+	public Category(UUID id, String name, String description, LocalDateTime createdAt) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -102,7 +102,7 @@ public class Categories implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categories other = (Categories) obj;
+		Category other = (Category) obj;
 		return Objects.equals(id, other.id);
 	}
 
