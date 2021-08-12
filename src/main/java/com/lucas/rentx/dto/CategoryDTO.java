@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.lucas.rentx.entities.Category;
 import com.lucas.rentx.services.validation.CreateCategory;
@@ -16,10 +16,10 @@ public class CategoryDTO implements Serializable {
 
 	private UUID id;
 	
-	@NotBlank(message= "name não dever nulo")
+	@NotEmpty(message= "name não dever nulo")
 	private String name;
 	
-	@NotBlank(message= "description não dever nulo")
+	@NotEmpty(message= "description não dever nulo")
 	private String description;
 
 	private LocalDateTime created_at;

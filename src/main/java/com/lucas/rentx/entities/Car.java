@@ -29,7 +29,7 @@ public class Car implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", updatable = false, unique = true, nullable = false)
 	private UUID id;
 
@@ -76,8 +76,8 @@ public class Car implements Serializable {
 	public Car() {
 	}
 
-	public Car(UUID id, String name, String description, Integer dailyRate, Boolean avaiable, String licensePlate,
-			Integer fineAmount, String brand, LocalDateTime createAt, Category category) {
+	public Car(UUID id, String name, String description, Integer dailyRate, Boolean avaiable, String licensePlate, Integer fineAmount,
+			String brand, LocalDateTime createAt, Category category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -130,7 +130,7 @@ public class Car implements Serializable {
 	public void setAvaiable(Boolean avaiable) {
 		this.avaiable = avaiable;
 	}
-
+		
 	public String getLicensePlate() {
 		return licensePlate;
 	}

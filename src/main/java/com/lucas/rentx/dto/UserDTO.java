@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 import com.lucas.rentx.entities.User;
 import com.lucas.rentx.services.validation.CreateUser;
@@ -17,19 +19,21 @@ public class UserDTO implements Serializable {
 
 	private UUID id;	
 	
-	@NotBlank(message= "name não dever nulo")
+	@NotEmpty(message= "name não dever nulo")	
 	private String name;
 	
-	@NotBlank(message= "username não dever nulo")
+	@NotEmpty(message= "username não dever nulo")
+	@Length(min = 5, max = 80, message = "O name deve ser entre 5 e 80 caracteres")
 	private String username;
 	
-	@NotBlank(message= "password não dever nulo")
+	@NotEmpty(message= "password não dever nulo")
+	@Length(min = 6, max = 22, message = "O password deve ser entre 5 e 80 caracteres")
 	private String password;
 	
 	@Email(message="Email inválido")
 	private String email;
 	
-	@NotBlank(message = "não pode ser nulo")
+	@NotEmpty(message= "driver_license não dever nulo")
 	private String driver_license;
 
 	private LocalDateTime created_at;
