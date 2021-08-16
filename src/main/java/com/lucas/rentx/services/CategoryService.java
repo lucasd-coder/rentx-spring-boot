@@ -24,10 +24,12 @@ public class CategoryService {
 		Optional<Category> obj = categoryRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ""));
 	}
-
-	public Category insert(Category obj) {
-		obj.setId(null);
-		return categoryRepository.save(obj);
+	
+	@Transactional()
+	public CategoryDTO insert(CategoryDTO obj) {		
+		Category category = fromDto(obj);
+		categoryRepository.save(category);
+		return new CategoryDTO(category);
 	}
 	
 	@Transactional(readOnly = true)
@@ -36,8 +38,8 @@ public class CategoryService {
 		return result.map(obj -> new CategoryDTO(obj));
 	}
 
-	public Category froDto(CategoryDTO objDto) {
-		return new Category(objDto.getId(), objDto.getName(), objDto.getDescription(), null);
+	public Category fromDto(CategoryDTO objDto) {
+		return new Category(null, objDto.getName(), objDto.getDescription(), null);
 	}
 	
 }

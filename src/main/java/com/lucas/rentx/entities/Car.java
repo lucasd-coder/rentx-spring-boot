@@ -167,11 +167,11 @@ public class Car implements Serializable {
 		return rental;
 	}
 
-	public Category getCategories() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategories(Category category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 

@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.lucas.rentx.entities.Car;
 import com.lucas.rentx.entities.Category;
 import com.lucas.rentx.entities.User;
+import com.lucas.rentx.entities.enums.Perfil;
+import com.lucas.rentx.repositories.CarRepository;
 import com.lucas.rentx.repositories.CategoryRepository;
 import com.lucas.rentx.repositories.UserRepository;
 
@@ -24,11 +27,15 @@ public class SeedService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 
+	@Autowired
+	private CarRepository carRepository;
+
 	public void instantiateTestDatabase() throws ParseException {
 
 		User user1 = new User(null, "Maria", "maria123", pe.encode("123456"), "maria@gmail.com", "123456789", null,
 				null);
 		User admin = new User(null, "João", "joao123", pe.encode("123456"), "joao@gmail.com", "123456789", null, null);
+		admin.addPerfil(Perfil.ADMIN);
 
 		userRepository.saveAll(Arrays.asList(user1, admin));
 
@@ -44,6 +51,12 @@ public class SeedService {
 				+ "são carros em que a emoção prevalece sobre a razão.", null);
 
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2));
+
+		Car car1 = new Car(null, "fusca", "fusca azul", 20, true, "VAR-2005", 10, "Volkswagen", null, cat1);
+
+		Car car2 = new Car(null, "Fiorino", "um membro da família Uno", 40, true, "OUT-147", 25, "Fiat", null, cat2);
+
+		carRepository.saveAll(Arrays.asList(car1, car2));
 
 	}
 

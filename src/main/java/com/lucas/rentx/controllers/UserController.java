@@ -30,9 +30,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<UserResponseDTO> find(@PathVariable UUID id) {		
+	public ResponseEntity<UserResponseDTO> find(@PathVariable UUID id) {
 		User obj = userService.find(id);
 		UserResponseDTO userDto = new UserResponseDTO(obj);
 		BeanUtils.copyProperties(obj, userDto);
@@ -41,15 +40,14 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody UserDTO objDto) {
-		User obj = userService.fromDto(objDto);
-		obj = userService.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+		objDto = userService.insert(objDto);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(objDto.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@PostMapping(value = "/avatar")
-	public ResponseEntity<Void> uploadUserAvatar(@RequestParam MultipartFile file) {		 
-				userService.uploadAvatar(file);		
+	public ResponseEntity<Void> uploadUserAvatar(@RequestParam MultipartFile file) {
+		userService.uploadAvatar(file);
 		return ResponseEntity.ok().build();
 	}
 

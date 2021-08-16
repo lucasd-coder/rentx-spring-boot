@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.lucas.rentx.dto.UserDTO;
@@ -35,12 +36,14 @@ public class UserService {
 		Optional<User> obj = userRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ""));
 	}
-
-	public User insert(User obj) {
-		obj.setId(null);
-		return userRepository.save(obj);
+	
+	@Transactional()
+	public UserDTO insert(UserDTO obj) {
+		User user = fromDto(obj);
+		userRepository.save(user);
+		return new UserDTO(user);		
 	}
-
+	
 	public User uploadAvatar(MultipartFile file) {
 		UserSS user = UserAuthService.authenticated();
 		User checkUserExist = find(user.getId());
@@ -54,7 +57,7 @@ public class UserService {
 	}
 
 	public User fromDto(UserDTO objDto) {
-		return new User(objDto.getId(), objDto.getName(), objDto.getUsername(), pe.encode(objDto.getPassword()),
+		return new User(null, objDto.getName(), objDto.getUsername(), pe.encode(objDto.getPassword()),
 				objDto.getEmail(), objDto.getDriver_license(), null, null);
 	}
 }

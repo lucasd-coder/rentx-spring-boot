@@ -52,14 +52,6 @@ public class ControllerExceptionHandler {
 
 	}
 
-//	@ExceptionHandler(NullPointerException.class)
-//	public ResponseEntity<StandardError> upload(NullPointerException e, HttpServletRequest request) {
-//		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.BAD_REQUEST.value(),
-//				"Campo invalido", e.getMessage(), request.getRequestURI());
-//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
-//
-//	}
-
 	@ExceptionHandler(FileException.class)
 	public ResponseEntity<StandardError> file(FileException e, HttpServletRequest request) {
 

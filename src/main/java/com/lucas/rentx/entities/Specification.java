@@ -28,7 +28,8 @@ public class Specification implements Serializable {
 	private UUID id;
 
 	private String name;
-
+	
+	@Column(columnDefinition = "TEXT")
 	private String description;
 
 	@Column(name = "created_at")

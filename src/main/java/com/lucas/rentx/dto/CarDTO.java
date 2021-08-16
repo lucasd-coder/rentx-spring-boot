@@ -65,7 +65,7 @@ public class CarDTO implements Serializable {
 		license_plate = entity.getLicensePlate();
 		brand = entity.getBrand();
 		created_at = entity.getCreatedAt();
-		category = new CategoryDTO(entity.getCategories());
+		category = new CategoryDTO(entity.getCategory());
 	}
 
 	public UUID getId() {
