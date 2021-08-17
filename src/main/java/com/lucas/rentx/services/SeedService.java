@@ -9,10 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.lucas.rentx.entities.Car;
 import com.lucas.rentx.entities.Category;
+import com.lucas.rentx.entities.Specification;
+import com.lucas.rentx.entities.SpecificationCar;
 import com.lucas.rentx.entities.User;
 import com.lucas.rentx.entities.enums.Perfil;
 import com.lucas.rentx.repositories.CarRepository;
 import com.lucas.rentx.repositories.CategoryRepository;
+import com.lucas.rentx.repositories.SpecificationCarRepository;
+import com.lucas.rentx.repositories.SpecificationRepository;
 import com.lucas.rentx.repositories.UserRepository;
 
 @Service
@@ -29,6 +33,12 @@ public class SeedService {
 
 	@Autowired
 	private CarRepository carRepository;
+	
+	@Autowired
+	private SpecificationRepository specificationRepository;		
+	
+	@Autowired
+	private SpecificationCarRepository specificationCarRepository;
 
 	public void instantiateTestDatabase() throws ParseException {
 
@@ -57,7 +67,25 @@ public class SeedService {
 		Car car2 = new Car(null, "Fiorino", "um membro da família Uno", 40, true, "OUT-147", 25, "Fiat", null, cat2);
 
 		carRepository.saveAll(Arrays.asList(car1, car2));
-
+		
+		Specification spe1 = new Specification(null, "2 portas", "carro bonito", null);
+		
+		Specification spe2 = new Specification(null, "2 portas", "carro com pneu goodyear", null);
+		
+		specificationRepository.saveAll(Arrays.asList(spe1, spe2));
+		
+		SpecificationCar specar1 = new SpecificationCar(car1, spe1, null);
+		SpecificationCar specar2 = new SpecificationCar(car2, spe2, null);
+		SpecificationCar specar3 = new SpecificationCar(car2, spe1, null);
+		
+		car1.getSpecifications().addAll(Arrays.asList(specar1));
+		car2.getSpecifications().addAll(Arrays.asList(specar2, specar3));
+		
+		spe1.getSpecifications().addAll(Arrays.asList(specar1, specar2));
+		spe2.getSpecifications().addAll(Arrays.asList(specar3));
+		
+		specificationCarRepository.saveAll(Arrays.asList(specar1, specar2, specar3));
+				
 	}
 
 }

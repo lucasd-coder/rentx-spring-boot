@@ -7,6 +7,7 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,7 +20,7 @@ public class SpecificationCar implements Serializable {
 
 	@JsonIgnore
 	@EmbeddedId
-	private SpecificationCarPk id = new SpecificationCarPk();
+	SpecificationCarPk id = new SpecificationCarPk();
 
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
@@ -29,9 +30,14 @@ public class SpecificationCar implements Serializable {
 
 	public SpecificationCar(Car car, Specification specification, LocalDateTime createAt) {
 		super();
-		id.setCars(car);
-		id.setSpecifications(specification);
+		id.setCar(car);
+		id.setSpecification(specification);
 		this.createdAt = createAt;
+	}
+	
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
 	}
 
 	public LocalDateTime getCreatedAt() {
@@ -52,19 +58,19 @@ public class SpecificationCar implements Serializable {
 
 	@JsonIgnore
 	public Specification getSpecification() {
-		return id.getSpecifications();
+		return id.getSpecification();
 	}
 
-	public void setSpecifications(Specification specification) {
-		id.setSpecifications(specification);
+	public void setSpecification(Specification specification) {
+		id.setSpecification(specification);
 	}
 
-	public Car getCars() {
-		return id.getCars();
+	public Car getCar() {
+		return id.getCar();
 	}
 
-	public void setCars(Car car) {
-		id.setCars(car);
+	public void setCar(Car car) {
+		id.setCar(car);
 	}
 
 	@Override

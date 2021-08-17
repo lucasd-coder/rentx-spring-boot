@@ -177,6 +177,14 @@ public class Car implements Serializable {
 
 	public List<CarImage> getImages() {
 		return images;
+	}		
+
+	public Set<SpecificationCar> getSpecifications() {
+		return specifications;
+	}
+
+	public void setSpecifications(Set<SpecificationCar> specifications) {
+		this.specifications = specifications;
 	}
 
 	@Override

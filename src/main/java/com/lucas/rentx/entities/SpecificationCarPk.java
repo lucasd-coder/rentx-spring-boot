@@ -20,19 +20,19 @@ public class SpecificationCarPk implements Serializable {
 	@JoinColumn(name = "specification_id")
 	private Specification specification;
 
-	public Car getCars() {
+	public Car getCar() {
 		return car;
 	}
 
-	public void setCars(Car car) {
+	public void setCar(Car car) {
 		this.car = car;
 	}
 
-	public Specification getSpecifications() {
+	public Specification getSpecification() {
 		return specification;
 	}
 
-	public void setSpecifications(Specification specification) {
+	public void setSpecification(Specification specification) {
 		this.specification = specification;
 	}
 
