@@ -124,12 +124,12 @@ public class CarDTO implements Serializable {
 		this.brand = brand;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public LocalDateTime getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
-		this.created_at = createdAt;
+	public void setCreated_at(LocalDateTime created_at) {
+		this.created_at = created_at;
 	}
 
 	public CategoryDTO getCategory() {

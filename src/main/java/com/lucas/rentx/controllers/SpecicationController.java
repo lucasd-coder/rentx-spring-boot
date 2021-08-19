@@ -23,8 +23,8 @@ public class SpecicationController {
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody SpecificationDTO objDto) {
+	public ResponseEntity<SpecificationDTO> insert(@Valid @RequestBody SpecificationDTO objDto) {
 		objDto = specificationService.insert(objDto);		
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(objDto);
 	}	
 }

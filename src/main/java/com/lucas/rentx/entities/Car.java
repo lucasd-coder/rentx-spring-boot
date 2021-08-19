@@ -20,8 +20,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 @Table(name = "tb_cars")
 public class Car implements Serializable {
@@ -63,8 +61,7 @@ public class Car implements Serializable {
 
 	@OneToMany(mappedBy = "car")
 	private List<CarImage> images = new ArrayList<>();
-
-	@JsonIgnore
+	
 	@OneToMany(mappedBy = "id.car")
 	private Set<SpecificationCar> specifications = new HashSet<>();
 
@@ -178,7 +175,7 @@ public class Car implements Serializable {
 	public List<CarImage> getImages() {
 		return images;
 	}		
-
+		
 	public Set<SpecificationCar> getSpecifications() {
 		return specifications;
 	}

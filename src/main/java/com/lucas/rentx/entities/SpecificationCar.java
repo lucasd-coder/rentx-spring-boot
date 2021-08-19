@@ -25,6 +25,11 @@ public class SpecificationCar implements Serializable {
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 
+	@PrePersist
+	private void prePersist() {
+		this.createdAt = LocalDateTime.now();
+	}
+
 	public SpecificationCar() {
 	}
 
@@ -33,11 +38,6 @@ public class SpecificationCar implements Serializable {
 		id.setCar(car);
 		id.setSpecification(specification);
 		this.createdAt = createAt;
-	}
-	
-	@PrePersist
-	private void prePersist() {
-		this.createdAt = LocalDateTime.now();
 	}
 
 	public LocalDateTime getCreatedAt() {
