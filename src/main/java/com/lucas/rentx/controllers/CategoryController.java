@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lucas.rentx.dto.CategoryDTO;
 import com.lucas.rentx.services.CategoryService;
+import com.lucas.rentx.services.ImportCategoryService;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -25,6 +28,9 @@ public class CategoryController {
 
 	@Autowired
 	private CategoryService categoryService;
+
+	@Autowired
+	private ImportCategoryService importCategoryService;
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
@@ -40,5 +46,12 @@ public class CategoryController {
 
 		return ResponseEntity.ok(list);
 
+	}
+
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PostMapping(value = "/import")
+	public ResponseEntity<Void> importFile(@RequestParam("file") MultipartFile file) {
+		importCategoryService.loadCategory(file);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
