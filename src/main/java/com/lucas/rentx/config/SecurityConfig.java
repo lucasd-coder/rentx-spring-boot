@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS_POST = { "/users/**", "/auth/forgot/**", "/auth/reset/**" };
 
-	private static final String[] PUBLIC_MATCHERS_GET = { "/categories/**", "/tmp/avatar/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/categories/**", "/tmp/avatar/**", "/cars/available/**" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

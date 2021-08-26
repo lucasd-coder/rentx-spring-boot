@@ -1,13 +1,18 @@
 package com.lucas.rentx.services;
 
+import static com.lucas.rentx.repositories.customization.CarRepositorySpecification.findByAvailableTrue;
+
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lucas.rentx.dto.CarDTO;
+import com.lucas.rentx.dto.CarResponseDTO;
 import com.lucas.rentx.entities.Car;
 import com.lucas.rentx.repositories.CarRepository;
 import com.lucas.rentx.services.exceptions.ObjectNotFoundException;
@@ -34,6 +39,14 @@ public class CarService {
 		return new CarDTO(car);
 	}
 
+	@Transactional(readOnly = true)
+	public Page<CarResponseDTO> listAvailable(String name, String brand, UUID categoryId, Pageable pageable) {
+		Page<Car> list = carRepository.findAll(findByAvailableTrue(brand, name, categoryId), pageable);
+		Page<CarResponseDTO> listDto = list.map(obj -> new CarResponseDTO(obj));
+
+		return listDto;
+	}
+		
 	public Car fromDto(CarDTO objDto) {
 		return new Car(null, objDto.getName(), objDto.getDescription(), objDto.getDaily_rate(), true,
 				objDto.getLicense_plate(), objDto.getFine_amount(), objDto.getBrand(), null, null);

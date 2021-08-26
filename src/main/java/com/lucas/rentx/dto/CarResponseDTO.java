@@ -4,60 +4,38 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import com.lucas.rentx.entities.Car;
-import com.lucas.rentx.services.validation.CreateCar;
 
-@CreateCar
-public class CarDTO implements Serializable {
+public class CarResponseDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private UUID id;
 
-	@NotEmpty(message = "name não dever nulo")
+	private Boolean avaiable;
+
 	private String name;
 
-	@NotEmpty(message = "description não dever nulo")
 	private String description;
 
-	@NotNull(message = "daily_rate não dever nulo")
 	private Integer daily_rate;
 
-	@NotNull(message = "fine_amount não dever nulo")
 	private Integer fine_amount;
 
-	@NotEmpty(message = "license_plate não dever nulo")
 	private String license_plate;
 
-	@NotEmpty(message = "brand não dever nulo")
 	private String brand;
 
 	private UUID category_id;
 
 	private LocalDateTime created_at;
 
-	public CarDTO() {
+	public CarResponseDTO() {
 	}
 
-	public CarDTO(UUID id, String name, String description, Integer daily_rate, Integer fine_amount,
-			String license_plate, String brand, UUID category_id, LocalDateTime created_at) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.description = description;
-		this.daily_rate = daily_rate;
-		this.fine_amount = fine_amount;
-		this.license_plate = license_plate;
-		this.brand = brand;
-		this.category_id = category_id;
-		this.created_at = created_at;
-	}
-
-	public CarDTO(Car entity) {
+	public CarResponseDTO(Car entity) {
 		id = entity.getId();
+		avaiable = entity.getAvaiable();
 		name = entity.getName();
 		description = entity.getDescription();
 		daily_rate = entity.getDailyRate();
@@ -74,6 +52,14 @@ public class CarDTO implements Serializable {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public Boolean getAvaiable() {
+		return avaiable;
+	}
+
+	public void setAvaiable(Boolean avaiable) {
+		this.avaiable = avaiable;
 	}
 
 	public String getName() {
@@ -139,5 +125,4 @@ public class CarDTO implements Serializable {
 	public void setCreated_at(LocalDateTime created_at) {
 		this.created_at = created_at;
 	}
-
 }

@@ -65,8 +65,12 @@ public class SeedService {
 		Car car1 = new Car(null, "fusca", "fusca azul", 20, true, "VAR-2005", 10, "Volkswagen", null, cat1);
 
 		Car car2 = new Car(null, "Fiorino", "um membro da família Uno", 40, true, "OUT-147", 25, "Fiat", null, cat2);
+		
+		Car car3 = new Car(null, "saveiro", "carro bonito", 45, false, "UTU-200", 30, "Volkswagen", null, cat2);
+		
+		Car car4 = new Car(null, "audi A6", ".0 55 TFSI GASOLINA PERFORMANCE BLACK QUATTRO 4P S-TRONIC", 60, false, "YTR-88", 35, "Audi", null, cat1);
 
-		carRepository.saveAll(Arrays.asList(car1, car2));
+		carRepository.saveAll(Arrays.asList(car1, car2, car3, car4));
 		
 		Specification spe1 = new Specification(null, "2 portas", "carro bonito", null);
 		
