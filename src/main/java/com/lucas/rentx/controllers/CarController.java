@@ -1,5 +1,6 @@
 package com.lucas.rentx.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.lucas.rentx.dto.CarDTO;
 import com.lucas.rentx.dto.CarResponseDTO;
@@ -26,6 +28,7 @@ import com.lucas.rentx.dto.SpecificationCarDTO;
 import com.lucas.rentx.dto.SpecificationCarIdDTO;
 import com.lucas.rentx.services.CarService;
 import com.lucas.rentx.services.SpecificationCarService;
+import com.lucas.rentx.services.UploadCarImageService;
 
 @RestController
 @RequestMapping(value = "/cars")
@@ -36,6 +39,9 @@ public class CarController {
 
 	@Autowired
 	private SpecificationCarService specificationCarService;
+	
+	@Autowired
+	private UploadCarImageService uploadCarImageService;
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping(value = "/{id}")
@@ -65,6 +71,14 @@ public class CarController {
 
 		return ResponseEntity.ok(objDto);
 	}
+	
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@PostMapping(value = "/images/{car_id}")
+	public ResponseEntity<Void> uploadCarImage(@PathVariable("car_id") UUID carId, @RequestParam List<MultipartFile> images){
+			uploadCarImageService.upoloadImageCar(carId, images);
+		return ResponseEntity.ok().build();
+	}
+	
 
 
 }

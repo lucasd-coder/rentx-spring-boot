@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,12 @@ public class UserService {
 	@Autowired
 	private BCryptPasswordEncoder pe;
 
+	@Value("${tmp.disco.raiz-avatar}")
+	private String raiz;
+
+	@Value("${tmp.disco.diretorio-avatar}")
+	private String diretorioAvatar;
+
 	public User find(UUID id) {
 		UserSS user = UserAuthService.authenticated();
 		if (user == null || !id.equals(user.getId())) {
@@ -36,21 +43,21 @@ public class UserService {
 		Optional<User> obj = userRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ""));
 	}
-	
+
 	@Transactional()
 	public UserDTO insert(UserDTO obj) {
 		User user = fromDto(obj);
 		userRepository.save(user);
-		return new UserDTO(user);		
+		return new UserDTO(user);
 	}
-	
+
 	public User uploadAvatar(MultipartFile file) {
 		UserSS user = UserAuthService.authenticated();
 		User checkUserExist = find(user.getId());
 		if (checkUserExist.getAvatar() != null) {
-			localStoreService.delete(checkUserExist.getAvatar());
+			localStoreService.delete(checkUserExist.getAvatar(), raiz, diretorioAvatar);
 		}
-		String avatar = localStoreService.salvarAvatar(file);
+		String avatar = localStoreService.salvar(file, raiz, diretorioAvatar);
 		checkUserExist.setAvatar(avatar);
 		return userRepository.save(checkUserExist);
 

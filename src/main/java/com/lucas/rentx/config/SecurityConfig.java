@@ -42,7 +42,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS_POST = { "/users/**", "/auth/forgot/**", "/auth/reset/**" };
 
-	private static final String[] PUBLIC_MATCHERS_GET = { "/categories/**", "/tmp/avatar/**", "/cars/available/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/categories/**", "/tmp/avatar/**", "/tmp/cars/** ",
+			"/cars/available/**" };
+
+	private static final String[] PUBLIC_MATCHERS_UPLOAD_GET = { "/avatar/**", "/cars/**" };
+
+	private static final String[] PUBLIC_LOCATION = { "classpath:/static/tmp/avatar/", "classpath:/static/tmp/cars/" };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -62,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/avatar/**").addResourceLocations("classpath:/static/tmp/avatar/");
+		registry.addResourceHandler(PUBLIC_MATCHERS_UPLOAD_GET).addResourceLocations(PUBLIC_LOCATION);
 	}
 
 	@Override
