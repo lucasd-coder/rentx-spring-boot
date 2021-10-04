@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.lucas.rentx.dto.UserDTO;
 import com.lucas.rentx.entities.User;
+import com.lucas.rentx.entities.enums.Perfil;
 import com.lucas.rentx.repositories.UserRepository;
 import com.lucas.rentx.security.UserSS;
 import com.lucas.rentx.services.exceptions.AuthorizationException;
@@ -37,7 +38,7 @@ public class UserService {
 
 	public User find(UUID id) {
 		UserSS user = UserAuthService.authenticated();
-		if (user == null || !id.equals(user.getId())) {
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
 			throw new AuthorizationException("Acesso negado");
 		}
 		Optional<User> obj = userRepository.findById(id);

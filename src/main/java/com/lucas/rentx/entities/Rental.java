@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tb_rentals")
 public class Rental implements Serializable {
@@ -24,7 +26,7 @@ public class Rental implements Serializable {
 
 	@Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name = "id", updatable = false, unique = true, nullable = false)
+	@Column(updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
 	private UUID id;
 
 	@Column(name = "start_date")
@@ -32,9 +34,12 @@ public class Rental implements Serializable {
 
 	@Column(name = "end_date")
 	private Date endDate;
-
+	
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS")
 	@Column(name = "expected_return_date")
 	private Date expectedReturnDate;
+	
+	private Long total;
 
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
@@ -58,13 +63,14 @@ public class Rental implements Serializable {
 	public Rental() {
 	}
 
-	public Rental(UUID id, Date startDate, Date endDate, Date expectedReturnDate, LocalDateTime createdAt,
+	public Rental(UUID id, Date startDate, Date endDate, Date expectedReturnDate, Long total, LocalDateTime createdAt,
 			LocalDateTime updatedAt, User user, Car car) {
 		super();
 		this.id = id;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.expectedReturnDate = expectedReturnDate;
+		this.total = total;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.user = user;
@@ -102,6 +108,14 @@ public class Rental implements Serializable {
 	public void setExpectedReturnDate(Date expectedReturnDate) {
 		this.expectedReturnDate = expectedReturnDate;
 	}
+	
+	public Long getTotal() {
+		return total;
+	}
+	
+	public void setTotal(Long total) {
+		this.total = total;
+	}
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;
@@ -127,11 +141,11 @@ public class Rental implements Serializable {
 		this.user = user;
 	}
 
-	public Car getCars() {
+	public Car getCar() {
 		return car;
 	}
 
-	public void setCars(Car car) {
+	public void setCar(Car car) {
 		this.car = car;
 	}
 

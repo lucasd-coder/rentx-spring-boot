@@ -23,7 +23,7 @@ public class CarImage implements Serializable {
 
 	@Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-	@Column(name = "id", updatable = false, unique = true, nullable = false)
+	@Column(updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
 	private UUID id;
 
 	@Column(name = "image_name")
