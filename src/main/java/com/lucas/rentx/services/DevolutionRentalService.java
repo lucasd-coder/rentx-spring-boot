@@ -15,7 +15,7 @@ import com.lucas.rentx.dto.RentalDTO;
 import com.lucas.rentx.entities.Car;
 import com.lucas.rentx.entities.Rental;
 import com.lucas.rentx.repositories.RentalRepository;
-import com.lucas.rentx.repositories.querys.CarRepositoriyQuery;
+import com.lucas.rentx.repositories.querys.impl.CarRepositoriyQueryImpl;
 import com.lucas.rentx.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -25,7 +25,7 @@ public class DevolutionRentalService {
 	private RentalRepository rentalRepository;
 
 	@Autowired
-	private CarRepositoriyQuery carRepositoriyQuery;
+	private CarRepositoriyQueryImpl carRepositoriyQueryImpl;
 
 	@Autowired
 	private CarService carService;
@@ -63,7 +63,7 @@ public class DevolutionRentalService {
 		rental.setTotal(total);
 
 		rentalRepository.save(rental);
-		carRepositoriyQuery.updateAvailable(car.getId(), true);
+		carRepositoriyQueryImpl.updateAvailable(car.getId(), true);
 
 		return new RentalDTO(rental);
 

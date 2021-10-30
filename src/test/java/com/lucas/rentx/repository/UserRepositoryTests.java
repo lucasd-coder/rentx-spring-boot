@@ -37,6 +37,6 @@ public class UserRepositoryTests {
 	public void findByIdShouldReturnNonEmptyOptionalUserWhenIdDoesNotExists() {
 		Optional<User> result = userRepository.findById(nonExistingId);
 		Assertions.assertTrue(result.isEmpty());
-	}
+	}	
 
 }

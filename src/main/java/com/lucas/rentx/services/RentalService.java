@@ -14,7 +14,7 @@ import com.lucas.rentx.dto.RentalDTO;
 import com.lucas.rentx.entities.Rental;
 import com.lucas.rentx.entities.User;
 import com.lucas.rentx.repositories.RentalRepository;
-import com.lucas.rentx.repositories.querys.CarRepositoriyQuery;
+import com.lucas.rentx.repositories.querys.impl.CarRepositoriyQueryImpl;
 import com.lucas.rentx.security.UserSS;
 import com.lucas.rentx.services.exceptions.DataIntegrityException;
 
@@ -28,7 +28,7 @@ public class RentalService {
 	private UserService userService;
 
 	@Autowired
-	private CarRepositoriyQuery carRepositoriyQuery;
+	private CarRepositoriyQueryImpl carRepositoriyQueryImpl;
 	
 	@Autowired
 	private CarService carService;
@@ -52,7 +52,7 @@ public class RentalService {
 
 		rentalRepository.save(rental);
 
-		carRepositoriyQuery.updateAvailable(objDto.getCarId(), false);
+		carRepositoriyQueryImpl.updateAvailable(objDto.getCarId(), false);
 
 		return new RentalDTO(rental);
 	}
